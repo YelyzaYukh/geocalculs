@@ -75,7 +75,7 @@ Fichier : `tests/test_shapres.rs`
 ```python
 import pytest
 import geocalculs as g
-
+ 
 @pytest.mark.parametrize(
     "largeur,hauteur,perimetre_attendu,surface_attendue",
     [
