@@ -13,9 +13,11 @@ fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
 fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     m.add_function(wrap_pyfunction!(shapes::perimetre_rectangle,m)?)?;
-    m.add_function(wrap_pyfunction!(shapes::surface_ractangle,m)?)?;
-    m.add_function(wrap_pyfunction!(distance::distance_2d,m)?)?;
     m.add_function(wrap_pyfunction!(shapes::surface_rectangle,m)?)?;
+    m.add_function(wrap_pyfunction!(distance::distance_2d,m)?)?;
+    m.add_function(wrap_pyfunction!(shapes::perimetre_cercle,m)?)?;
+    m.add_function(wrap_pyfunction!(shapes::surface_cercle,m)?)?;
+
     Ok(())
 }
 
