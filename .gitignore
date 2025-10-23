@@ -75,3 +75,5 @@ docs/_build/
 
 .venv
 .venv/
+
+Cargo.lock
