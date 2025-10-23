@@ -15,12 +15,12 @@ Chaque membre de l’équipe y décrit sa ou ses fonctions :
 ## Auteur : ARIOUI Mohamed Acharf Ouassim  
 ### Fonction : `distance_2d`
 
-### 🎯 Objectif
+###  Objectif
 Implémenter une fonction permettant de **calculer la distance entre deux points** dans un plan 2D, à partir de leurs coordonnées `(x1, y1)` et `(x2, y2)`.
 
 ---
 
-### 🧮 Formule mathématique
+###  Formule mathématique
 
 La distance entre deux points \( A(x_1, y_1) \) et \( B(x_2, y_2) \) est donnée par la **formule de Pythagore** :
 
@@ -35,7 +35,7 @@ Où :
 
 ---
 
-### 🦀 Implémentation (Rust)
+###  Implémentation (Rust)
 
 **Fichier : `src/distance.rs`**
 ```rust
