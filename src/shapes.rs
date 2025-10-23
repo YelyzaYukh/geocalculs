@@ -9,6 +9,6 @@ pub fn perimetre_rectangle(largeur: f64,hauteur: f64) -> f64 {
 
 //calcule la surface d'un rectangle
 #[pyfunction]
-pub fn surface_ractangle(largeur: f64,hauteur: f64) -> f64 {
+pub fn surface_rectangle(largeur: f64,hauteur: f64) -> f64 {
     largeur * hauteur
 }
