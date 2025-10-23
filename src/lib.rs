@@ -1,5 +1,7 @@
 use pyo3::prelude::*;
 
+
+mod distance;
 mod shapes;
 /// Formats the sum of two numbers as string.
 #[pyfunction]
@@ -18,5 +20,9 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(shapes::perimetre_triangle,m)?)?;
     m.add_function(wrap_pyfunction!(shapes::surface_triangle,m)?)?;
 
+
+    m.add_function(wrap_pyfunction!(distance::distance_2d,m)?)?;
+
     Ok(())
 }
+
