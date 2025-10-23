@@ -67,8 +67,7 @@ cd geolib2d
 maturin develop
 Exécuter les tests :
 
-bash
-Copier le code
+
 pytest
 Structure du projet
 bash
