@@ -20,8 +20,6 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(shapes::surface_rectangle, m)?)?;
     m.add_function(wrap_pyfunction!(rectangle::definir_rectangle, m)?)?;
     m.add_function(wrap_pyfunction!(distance::distance_2d,m)?)?;
-    m.add_function(wrap_pyfunction!(shapes::perimetre_triangle,m)?)?;
-    m.add_function(wrap_pyfunction!(shapes::surface_triangle,m)?)?;
 
     m.add_class::<cercle::Cercle>()?;
     m.add_class::<carre::Carre>()?;
@@ -37,4 +35,5 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     Ok(())
 }
+
 
