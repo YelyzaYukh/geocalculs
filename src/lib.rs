@@ -2,9 +2,10 @@ use pyo3::prelude::*;
 
 mod distance;
 mod shapes;
+
+mod carre;
 mod triangle;
 mod rectangle;
-
 mod cercle;
 mod polygon;
 mod validation;
@@ -23,7 +24,7 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(shapes::surface_triangle,m)?)?;
 
     m.add_class::<cercle::Cercle>()?;
-
+    m.add_class::<carre::Carre>()?;
     m.add_class::<polygon::Polygone>()?;
     m.add_function(wrap_pyfunction!(validation::valider_valeurs, m)?)?;
     m.add_function(wrap_pyfunction!(validation::valider_triangle, m)?)?;
