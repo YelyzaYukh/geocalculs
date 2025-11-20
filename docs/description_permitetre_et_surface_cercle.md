@@ -152,8 +152,10 @@ def test_cercle_surface_method():
     assert math.isclose(c.surface(), math.pi * 4.0, rel_tol=1e-12)
 ```
 ### Example d'utilisation (Python)
+```python
 import geocalculs as g
 
 c = g.Cercle(0.0, 0.0, 5)
 print(c.perimetre())  # Résultat : 31.41592653589793
 print(c.surface())    # Résultat : 78.53981633974483
+```
