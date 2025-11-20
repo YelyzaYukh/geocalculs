@@ -6,12 +6,24 @@ Ce fichier regroupe la documentation de toutes les **fonctions de calcul géomé
 ---
 
 ## Auteur : **Yelyzaveta YUKHNOVA**
-### Fonctions : `perimetre_cercle` et `surface_cercle`
+### Class: Cercle
+### Méthodes : `perimetre` et `surface`
 
 ---
 
 ###  Objectif
-Implémenter deux fonctions permettant de calculer : le périmètre (circonférence) et la surface d’un cercle.
+Définir un objet `Cercle` avec :
+
+- le centre (`x`, `y`)
+
+- le rayon `r`
+
+Implémenter deux méthodes dans le fichier `cercle.rs` permettant de calculer :
+
+* le périmètre (circonférence)
+
+* la surface du cercle
+
 Ces fonctions sont écrites en **Rust** et exposées à **Python** via la bibliothèque **PyO3**.
 
 ---
@@ -36,23 +48,43 @@ Où :
 
 ### ⚙ Implémentation (Rust)
 
-**Fichier :** `src/shapes.rs`
+**Fichier :** `src/cercle.rs`
 ```rust
+use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
-use std::f64;
 
-/// Calcule le périmètre d'un cercle
-#[pyfunction]
-pub fn perimetre_cercle(rayon: f64) -> f64 {
-    2.0 * std::f64::consts::PI * rayon
+/// Représentation d’un cercle
+#[pyclass]
+#[derive(Debug, Clone)]
+pub struct Cercle {
+    #[pyo3(get, set)]
+    pub centre_x: f64,
+    #[pyo3(get, set)]
+    pub centre_y: f64,
+    #[pyo3(get, set)]
+    pub rayon: f64,
 }
 
-/// Calcule la surface d'un cercle
-#[pyfunction]
-pub fn surface_cercle(rayon: f64) -> f64 {
-    std::f64::consts::PI * rayon.powi(2)
-}
+#[pymethods]
+impl Cercle {
+    #[new]
+    fn new(centre_x: f64, centre_y: f64, rayon: f64) -> PyResult<Self> {
+        if rayon < 0.0 {
+            return Err(PyValueError::new_err("Le rayon ne peut pas être négatif."));
+        }
+        Ok(Self { centre_x, centre_y, rayon })
+    }
 
+    /// Calcule le périmètre du cercle
+    pub fn perimetre(&self) -> f64 {
+        2.0 * std::f64::consts::PI * self.rayon
+    }
+
+    /// Calcule la surface du cercle
+    pub fn surface(&self) -> f64 {
+        std::f64::consts::PI * self.rayon.powi(2)
+    }
+}
 ```
 Fichier : `src/lib.rs`
 ```rust
@@ -63,8 +95,7 @@ mod shapes;
 
 #[pymodule]
 fn geocalculs(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(shapes::perimetre_cercle, m)?)?;
-    m.add_function(wrap_pyfunction!(shapes::surface_cercle, m)?)?;
+    m.add_class::<cercle::Cercle>()?;
     Ok(())
 }
 
@@ -74,29 +105,55 @@ fn geocalculs(_py: Python, m: &PyModule) -> PyResult<()> {
 `
 ```python
 import pytest
-import geocalculs as g  
+import math
+import geocalculs as g  # module PyO3
 
+# --- Tests de base pour le périmètre et la surface du cercle ---
 @pytest.mark.parametrize(
     "rayon,perimetre_attendu,surface_attendue",
     [
-        (1, 2*3.141592653589793, 3.141592653589793),
+        (1, 2*math.pi, math.pi),
         (0, 0.0, 0.0),
-        (2.5, 2*3.141592653589793*2.5, 3.141592653589793*2.5**2),
-        (10, 2*3.141592653589793*10, 3.141592653589793*100),
+        (2.5, 2*math.pi*2.5, math.pi*2.5**2),
+        (10, 2*math.pi*10, math.pi*100),
     ],
 )
 def test_perimetre_et_surface_cercle(rayon, perimetre_attendu, surface_attendue):
-    assert g.perimetre_cercle(rayon) == pytest.approx(perimetre_attendu)
-    assert g.surface_cercle(rayon) == pytest.approx(surface_attendue)
+    c = g.Cercle(0.0, 0.0, rayon)
+    assert math.isclose(c.perimetre(), perimetre_attendu, rel_tol=1e-12)
+    assert math.isclose(c.surface(), surface_attendue, rel_tol=1e-12)
 
+# --- Tests pour vérifier les types acceptés (int et float) ---
 def test_types_acceptes():
-    """Les fonctions doivent accepter à la fois des entiers et des flottants"""
-    assert g.perimetre_cercle(3) == pytest.approx(2*3.141592653589793*3)
-    assert g.surface_cercle(3.5) == pytest.approx(3.141592653589793*3.5**2)
+    c1 = g.Cercle(0.0, 0.0, 3)
+    assert math.isclose(c1.perimetre(), 2*math.pi*3, rel_tol=1e-12)
 
+    c2 = g.Cercle(0.0, 0.0, 3.5)
+    assert math.isclose(c2.surface(), math.pi*3.5**2, rel_tol=1e-12)
+
+# --- Tests pour les rayons négatifs ---
+def test_cercle_new_negatif():
+    with pytest.raises(ValueError, match="Le rayon ne peut pas être négatif."):
+        g.Cercle(0.0, 0.0, -3.0)
+
+# --- Tests de la classe Cercle ---
+def test_cercle_struct():
+    c = g.Cercle(3.0, 4.0, 5.0)
+    assert c.centre_x == 3.0
+    assert c.centre_y == 4.0
+    assert c.rayon == 5.0
+
+def test_cercle_perimetre_method():
+    c = g.Cercle(0.0, 0.0, 1.0)
+    assert math.isclose(c.perimetre(), 2.0 * math.pi, rel_tol=1e-12)
+
+def test_cercle_surface_method():
+    c = g.Cercle(0.0, 0.0, 2.0)
+    assert math.isclose(c.surface(), math.pi * 4.0, rel_tol=1e-12)
 ```
 ### Example d'utilisation (Python)
 import geocalculs as g
 
-print(g.perimetre_cercle(5))   # Résultat : 31.41592653589793
-print(g.surface_cercle(5))     # Résultat : 78.53981633974483
+c = g.Cercle(0.0, 0.0, 5)
+print(c.perimetre())  # Résultat : 31.41592653589793
+print(c.surface())    # Résultat : 78.53981633974483
