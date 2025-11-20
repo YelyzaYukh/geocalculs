@@ -55,7 +55,7 @@ use pyo3::prelude::*;
 pub fn distance_2d(x1: f64, y1: f64, x2: f64, y2: f64) -> f64 {
     ((x2 - x1).powi(2) + (y2 - y1).powi(2)).sqrt()
 }
-=======
+
 # Documentation des fonctions de calcul — Projet GeoCalculs
 
 ## Objectif du document
@@ -68,7 +68,7 @@ Chaque membre de l’équipe y décrit sa ou ses fonctions :
 - Exemple d’utilisation en Python  
 - Test unitaire associé  
 
----
+
 
 ## Auteur : ARIOUI Mohamed Acharf Ouassim  
 ### Fonction : `distance_2d`
@@ -76,7 +76,6 @@ Chaque membre de l’équipe y décrit sa ou ses fonctions :
 ###  Objectif
 Implémenter une fonction permettant de **calculer la distance entre deux points** dans un plan 2D, à partir de leurs coordonnées `(x1, y1)` et `(x2, y2)`.
 
----
 
 ###  Formule mathématique
 
