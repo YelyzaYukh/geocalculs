@@ -1,53 +1,57 @@
-#  Documentation — Fonction définir un triangle
+
+#  Documentation — Fonction **définir un triangle**
 
 ### Projet GeoCalculs
 
-## Objectif du document
+##  Objectif du document
 Ce fichier décrit la fonction de définition et validation d’un **triangle géométrique** développée en Rust et exposée à Python via **PyO3**.
 
 Chaque fonction documentée inclut :
 
 - Objectif
-- Règle mathématique appliquée
+- Règles mathématiques
 - Implémentation Rust
 - Exemple Python
-- Test unitaire associé
+- Tests unitaires
 
 ---
 
-## Auteur : **Youssef Jemaa**
-### Fonction : `definir_triangle`
+##  Auteur : **Youssef Jemaa**
+### Fonction documentée : `definir_triangle`
 
 ---
 
-##  1. Objectif
+##  Objectif
 
-Implémenter une fonction permettant de **définir et valider un triangle** à partir de trois points `(x, y)`.
+Implémenter une fonction permettant de **définir et valider un triangle** à partir de trois coordonnées `(x, y)`.
 
-La fonction vérifie automatiquement :
+La fonction vérifie :
 
-- ✔ les trois points sont **distincts**
-- ✔ les points ne sont **pas alignés**
-- ✔ renvoie une erreur claire en cas d’invalidité
-- ✔ exposée proprement à Python
+- ✔ Les trois points sont **distincts**
+- ✔ Les points ne sont **pas alignés**
+- ✔ Retourne une **erreur claire** en cas de problème
+- ✔ Fonction utilisable directement depuis **Python**
 
 ---
 
-##  2. Règles et propriétés mathématiques
+##  Règles et propriétés mathématiques
 
 Un triangle est valide si :
 
-### ✔ 1. Les points sont distincts  
-A ≠ B, B ≠ C, A ≠ C
+### ✔ 1. Les points sont distincts
+```
+A ≠ B,  B ≠ C,  A ≠ C
+```
 
-### ✔ 2. Les trois points ne sont pas alignés  
-On calcule l’aire signée :
+### ✔ 2. Les points ne sont pas alignés
+
+Aire signée :
 
 ```
 Aire = (xB - xA)(yC - yA) - (yB - yA)(xC - xA)
 ```
 
-Le triangle est valide si :
+Validité :
 
 ```
 |Aire| > 1×10⁻⁹
@@ -55,9 +59,7 @@ Le triangle est valide si :
 
 ---
 
-## ⚙ 3. Implémentation Rust
-
-###  Fichier : `src/triangle.rs`
+##  Implémentation Rust — `src/triangle.rs`
 
 ```rust
 use pyo3::prelude::*;
@@ -121,7 +123,7 @@ pub fn definir_triangle(
 
 ---
 
-##  Fichier : `src/lib.rs`
+##  `src/lib.rs`
 
 ```rust
 mod triangle;
@@ -131,9 +133,7 @@ m.add_function(wrap_pyfunction!(triangle::definir_triangle, m)?)?;
 
 ---
 
-##  4. Tests unitaires
-
-###  Fichier : `tests/test_definir_triangle.py`
+##  Tests unitaires — `tests/test_definir_triangle.py`
 
 ```python
 import geocalculs as geo
@@ -154,14 +154,15 @@ def test_points_alignes():
 
 ---
 
-##  5. Exemple d'utilisation
+##  Exemple d'utilisation
 
 ```python
 import geocalculs as geo
 print(geo.definir_triangle(0, 0, 3, 0, 2, 4))
 ```
 
-**Résultat :**  
+Résultat :
+
 ```
 Triangle défini : A(0,0) B(3,0) C(2,4)
 ```

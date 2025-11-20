@@ -1,4 +1,5 @@
-#  Documentation — Fonction définir un rectangle
+
+#  Documentation — Fonction **définir un rectangle**
 
 ### Projet GeoCalculs
 
@@ -8,59 +9,50 @@ Ce fichier décrit la fonction permettant de **définir et valider un rectangle*
 Chaque fonction documentée inclut :
 
 - Objectif
-- Règle mathématique appliquée
+- Règles mathématiques
 - Implémentation Rust
 - Exemple Python
-- Test unitaire associé
+- Tests unitaires
 
 ---
 
-## Auteur : **Youssef Jemaa**
-### Fonction : `definir_rectangle`
+##  Auteur : **Youssef Jemaa**
+### Fonction documentée : `definir_rectangle`
 
 ---
 
-##  1. Objectif
+##  Objectif
 
 Implémenter une fonction permettant de **définir et valider un rectangle** à partir de sa largeur et sa hauteur.
 
-La fonction vérifie automatiquement :
+La fonction vérifie :
 
-- ✔ largeur strictement positive  
-- ✔ hauteur strictement positive  
-- ✔ renvoie une erreur claire en cas d’invalidité  
-- ✔ utilisable directement depuis Python  
-
-Cela assure une validation correcte pour toutes les opérations géométriques (surface, périmètre, intersections).
+- ✔ largeur strictement positive
+- ✔ hauteur strictement positive
+- ✔ retourne une erreur claire en cas d’invalidité
+- ✔ fonction utilisable directement depuis **Python**
 
 ---
 
-##  2. Règles et propriétés mathématiques
+##  Règles et propriétés mathématiques
 
 Un rectangle est valide si :
 
-### ✔ Largeur > 0  
-### ✔ Hauteur > 0
+```
+largeur > 0
+hauteur > 0
+```
 
-Sinon, c’est une erreur.
-
-Le périmètre est :
+Formules :
 
 ```
 P = 2 × (largeur + hauteur)
-```
-
-La surface est :
-
-```
 S = largeur × hauteur
 ```
 
 ---
 
-## ⚙ 3. Implémentation Rust
-
-###  Fichier : `src/rectangle.rs`
+##  Implémentation Rust — `src/rectangle.rs`
 
 ```rust
 use pyo3::prelude::*;
@@ -72,7 +64,6 @@ pub struct Rectangle {
 }
 
 impl Rectangle {
-    /// Vérifie et crée un rectangle valide
     pub fn new(largeur: f64, hauteur: f64) -> Result<Self, &'static str> {
         if largeur <= 0.0 {
             return Err("La largeur doit être strictement positive.");
@@ -80,16 +71,13 @@ impl Rectangle {
         if hauteur <= 0.0 {
             return Err("La hauteur doit être strictement positive.");
         }
-
         Ok(Self { largeur, hauteur })
     }
 
-    /// Périmètre interne
     pub fn perimetre(&self) -> f64 {
         2.0 * (self.largeur + self.hauteur)
     }
 
-    /// Surface interne
     pub fn surface(&self) -> f64 {
         self.largeur * self.hauteur
     }
@@ -109,7 +97,7 @@ pub fn definir_rectangle(largeur: f64, hauteur: f64) -> PyResult<String> {
 
 ---
 
-##  Fichier : `src/lib.rs`
+##  `src/lib.rs`
 
 ```rust
 mod rectangle;
@@ -119,9 +107,7 @@ m.add_function(wrap_pyfunction!(rectangle::definir_rectangle, m)?)?;
 
 ---
 
-##  4. Tests unitaires
-
-###  Fichier : `tests/test_definir_rectangle.py`
+##  Tests unitaires — `tests/test_definir_rectangle.py`
 
 ```python
 import geocalculs as geo
@@ -149,14 +135,14 @@ def test_dimensions_nulles():
 
 ---
 
-##  5. Exemple d'utilisation
+##  Exemple d'utilisation
 
 ```python
 import geocalculs as geo
 print(geo.definir_rectangle(4, 2))
 ```
 
-**Résultat :**
+Résultat :
 
 ```
 Rectangle défini : largeur = 4, hauteur = 2
