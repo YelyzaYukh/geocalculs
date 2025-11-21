@@ -3,11 +3,11 @@ name: Python Tests on Merge
 # Automates the tests on merge action. 
 # Quand une Pull Request est MERGÉE dans la branche main,
 # ➡️ alors le workflow s’exécute.
-
+# cercle for testing procedure
 on:
   pull_request:
     branches:
-      - main
+      - cercle
     types:
       - closed
 
