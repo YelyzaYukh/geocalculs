@@ -9,6 +9,7 @@ mod polygon;
 mod validation;
 mod losange;
 mod carre;
+mod intersection;
 
 #[pymodule]
 fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -34,6 +35,8 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     // Validation
     m.add_function(wrap_pyfunction!(validation::valider_valeurs, m)?)?;
     m.add_function(wrap_pyfunction!(validation::valider_triangle, m)?)?;
+
+    m.add_function(wrap_pyfunction!(intersection::intersecte, m)?)?;
 
     Ok(())
 }
