@@ -9,6 +9,7 @@ mod polygon;
 mod validation;
 mod losange;
 mod carre;
+mod appartenance;
 
 #[pymodule]
 fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -34,6 +35,9 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     // Validation
     m.add_function(wrap_pyfunction!(validation::valider_valeurs, m)?)?;
     m.add_function(wrap_pyfunction!(validation::valider_triangle, m)?)?;
+
+    //Appartennance
+    m.add_function(wrap_pyfunction!(appartenance::appartient, m)?)?;
 
     Ok(())
 }
