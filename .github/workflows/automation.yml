@@ -1,0 +1,38 @@
+name: Merge testing with perimetre_cercle
+
+# Automates the tests on merge action. 
+# Quand une Pull Request est MERGÉE dans la branche main,
+# ➡️ alors le workflow s’exécute.
+# perimetre_cercle for testing procedure
+on:
+  pull_request:
+    branches:
+      - perimetre_cercle
+    types:
+      - closed
+
+jobs:
+  test:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install pytest
+          pip install maturin
+          maturin develop --release
+
+      - name: Run tests
+        run: pytest -v

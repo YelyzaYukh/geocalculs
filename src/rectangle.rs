@@ -5,28 +5,24 @@ use pyo3::prelude::*;
 pub struct Rectangle {
     #[pyo3(get, set)]
     pub largeur: f64,
-
+    #[pyo3(get, set)]
+    pub x: f64,
+    #[pyo3(get, set)]
+    pub y: f64,
     #[pyo3(get, set)]
     pub hauteur: f64,
 }
 
 #[pymethods]
 impl Rectangle {
-    /// Constructeur exposé à Python : Rectangle(largeur, hauteur)
     #[new]
-    fn new_py(largeur: f64, hauteur: f64) -> PyResult<Self> {
-        if largeur <= 0.0 {
+    fn new_py(x: f64, y: f64, largeur: f64, hauteur: f64) -> PyResult<Self> {
+        if largeur <= 0.0 || hauteur <= 0.0 {
             return Err(pyo3::exceptions::PyValueError::new_err(
-                "La largeur doit être strictement positive.",
+                "Les dimensions doivent être strictement positives.",
             ));
         }
-        if hauteur <= 0.0 {
-            return Err(pyo3::exceptions::PyValueError::new_err(
-                "La hauteur doit être strictement positive.",
-            ));
-        }
-
-        Ok(Self { largeur, hauteur })
+        Ok(Self { x, y, largeur, hauteur })
     }
 
     pub fn perimetre(&self) -> f64 {
@@ -39,11 +35,10 @@ impl Rectangle {
 }
 
 #[pyfunction]
-pub fn definir_rectangle(largeur: f64, hauteur: f64) -> PyResult<String> {
-    let rect = Rectangle::new_py(largeur, hauteur)?;
-
+pub fn definir_rectangle(x: f64, y: f64, largeur: f64, hauteur: f64) -> PyResult<String> {
+    let rect = Rectangle::new_py(x, y, largeur, hauteur)?;
     Ok(format!(
-        "Rectangle défini : largeur = {}, hauteur = {}",
-        rect.largeur, rect.hauteur
+        "Rectangle en ({}, {}) : {}x{}",
+        rect.x, rect.y, rect.largeur, rect.hauteur
     ))
 }
