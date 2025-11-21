@@ -46,6 +46,14 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(triangle::definir_triangle, m)?)?;
 
 
+    // Helpers géométriques (S3)
+    m.add_class::<helpers::Point>()?;
+    m.add_class::<helpers::AABB>()?;
+
+    m.add_function(wrap_pyfunction!(helpers::orientation, m)?)?;
+    m.add_function(wrap_pyfunction!(helpers::on_segment, m)?)?;
+
+
     Ok(())
 }
 
