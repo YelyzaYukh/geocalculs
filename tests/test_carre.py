@@ -1,6 +1,6 @@
 import pytest
 import math
-import geocalculs as g  # ton module PyO3
+import geocalculs as g  # module PyO3
 
 # --- Tests de base pour le périmètre et la surface du carré ---
 @pytest.mark.parametrize(

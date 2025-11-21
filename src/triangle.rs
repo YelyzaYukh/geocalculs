@@ -1,5 +1,6 @@
 use pyo3::prelude::*;
 
+/// --- INTERNE : non exposé à Python ---
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Point2D {
     pub x: f64,
@@ -12,63 +13,71 @@ impl Point2D {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+/// --- EXPOSE À PYTHON : Triangle PyClass ---
+
+#[pyclass]
+#[derive(Debug, Clone, Copy)]
 pub struct Triangle {
-    pub a: Point2D,
-    pub b: Point2D,
-    pub c: Point2D,
+    #[pyo3(get, set)]
+    pub ax: f64,
+    #[pyo3(get, set)]
+    pub ay: f64,
+    #[pyo3(get, set)]
+    pub bx: f64,
+    #[pyo3(get, set)]
+    pub by: f64,
+    #[pyo3(get, set)]
+    pub cx: f64,
+    #[pyo3(get, set)]
+    pub cy: f64,
 }
 
+#[pymethods]
 impl Triangle {
-    /// Vérifie et crée un triangle valide
-    pub fn new(a: Point2D, b: Point2D, c: Point2D) -> Result<Self, &'static str> {
+
+    #[new]
+    pub fn new(ax: f64, ay: f64, bx: f64, by: f64, cx: f64, cy: f64) -> PyResult<Self> {
+
+        let a = Point2D { x: ax, y: ay };
+        let b = Point2D { x: bx, y: by };
+        let c = Point2D { x: cx, y: cy };
+
+        // points distincts
         if a == b || b == c || a == c {
-            return Err("Les points du triangle doivent être distincts.");
+            return Err(pyo3::exceptions::PyValueError::new_err(
+                "Les points du triangle doivent être distincts."
+            ));
         }
 
+        // colinéarité
         let aire = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
         if aire.abs() < 1e-9 {
-            return Err("Les trois points sont alignés : ce n'est pas un triangle.");
+            return Err(pyo3::exceptions::PyValueError::new_err(
+                "Les trois points sont alignés : ce n'est pas un triangle."
+            ));
         }
 
-        Ok(Self { a, b, c })
+        Ok(Self { ax, ay, bx, by, cx, cy })
     }
 
-    pub fn perimetre_internal(&self) -> f64 {
-        self.a.distance(&self.b)
-            + self.b.distance(&self.c)
-            + self.c.distance(&self.a)
+    pub fn perimetre(&self) -> f64 {
+        let a = Point2D { x: self.ax, y: self.ay };
+        let b = Point2D { x: self.bx, y: self.by };
+        let c = Point2D { x: self.cx, y: self.cy };
+
+        a.distance(&b) + b.distance(&c) + c.distance(&a)
     }
 
-    pub fn surface_internal(&self) -> f64 {
-        let ab = self.a.distance(&self.b);
-        let bc = self.b.distance(&self.c);
-        let ca = self.c.distance(&self.a);
+    pub fn surface(&self) -> f64 {
+        let a = Point2D { x: self.ax, y: self.ay };
+        let b = Point2D { x: self.bx, y: self.by };
+        let c = Point2D { x: self.cx, y: self.cy };
+
+        let ab = a.distance(&b);
+        let bc = b.distance(&c);
+        let ca = c.distance(&a);
 
         let s = (ab + bc + ca) / 2.0;
         (s * (s - ab) * (s - bc) * (s - ca)).sqrt()
     }
-}
-
-/// Fonction exposée à Python pour définir un triangle
-#[pyfunction]
-pub fn definir_triangle(
-    ax: f64, ay: f64,
-    bx: f64, by: f64,
-    cx: f64, cy: f64
-) -> PyResult<String> {
-
-    let a = Point2D { x: ax, y: ay };
-    let b = Point2D { x: bx, y: by };
-    let c = Point2D { x: cx, y: cy };
-
-    let triangle = Triangle::new(a, b, c)
-        .map_err(|msg| pyo3::exceptions::PyValueError::new_err(msg))?;
-
-    Ok(format!(
-        "Triangle défini : A({},{}) B({},{}) C({},{})",
-        triangle.a.x, triangle.a.y,
-        triangle.b.x, triangle.b.y,
-        triangle.c.x, triangle.c.y
-    ))
 }
