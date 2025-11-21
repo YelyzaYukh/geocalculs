@@ -8,6 +8,7 @@ mod cercle;
 mod polygon;
 mod validation;
 mod losange;
+mod carre;
 
 #[pymodule]
 fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -28,6 +29,7 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<polygon::Polygone>()?;
     m.add_class::<losange::Losange>()?;
     m.add_class::<triangle::Triangle>()?;
+    m.add_class::<carre::Carre>()?;
 
     // Validation
     m.add_function(wrap_pyfunction!(validation::valider_valeurs, m)?)?;
