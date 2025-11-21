@@ -9,6 +9,7 @@ mod polygon;
 mod validation;
 mod losange;
 mod carre;
+mod helpers;
 
 #[pymodule]
 fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -34,6 +35,14 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     // Validation
     m.add_function(wrap_pyfunction!(validation::valider_valeurs, m)?)?;
     m.add_function(wrap_pyfunction!(validation::valider_triangle, m)?)?;
+
+    // Helpers géométriques (S3)
+    m.add_class::<helpers::Point>()?;
+    m.add_class::<helpers::AABB>()?;
+
+    m.add_function(wrap_pyfunction!(helpers::orientation, m)?)?;
+    m.add_function(wrap_pyfunction!(helpers::on_segment, m)?)?;
+
 
     Ok(())
 }
