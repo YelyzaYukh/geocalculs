@@ -1,6 +1,7 @@
+# pytest: skip
 import geocalculs as g
 
-def test_orientation():
+def manual_orientation():
     print("\n=== TEST ORIENTATION ===")
     x1, y1 = map(float, input("Point A (x y): ").split())
     x2, y2 = map(float, input("Point B (x y): ").split())
@@ -20,7 +21,7 @@ def test_orientation():
         print("→ Anti-horaire (counter-clockwise)")
 
 
-def test_on_segment():
+def manual_on_segment():
     print("\n=== TEST ON_SEGMENT ===")
     A = g.Point(*map(float, input("Point A (x y): ").split()))
     B = g.Point(*map(float, input("Point B (x y): ").split()))
@@ -29,7 +30,7 @@ def test_on_segment():
     print("C est sur AB :", g.on_segment(A, B, C))
 
 
-def test_aabb():
+def manual_aabb():
     print("\n=== TEST AABB ===")
     A = g.Point(*map(float, input("Point A (x y): ").split()))
     B = g.Point(*map(float, input("Point B (x y): ").split()))
@@ -53,11 +54,11 @@ def menu():
         choice = input("Choix : ")
 
         if choice == "1":
-            test_orientation()
+            manual_orientation()
         elif choice == "2":
-            test_on_segment()
+            manual_on_segment()
         elif choice == "3":
-            test_aabb()
+            manual_aabb()
         elif choice == "0":
             break
         else:
