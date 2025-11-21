@@ -18,6 +18,8 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(rectangle::definir_rectangle, m)?)?;
     m.add_function(wrap_pyfunction!(shapes::perimetre_rectangle, m)?)?;
     m.add_function(wrap_pyfunction!(shapes::surface_rectangle, m)?)?;
+    m.add_function(wrap_pyfunction!(rectangle::definir_rectangle, m)?)?;
+    m.add_function(wrap_pyfunction!(distance::distance_2d,m)?)?;
 
     // Autres fonctions
     m.add_function(wrap_pyfunction!(distance::distance_2d, m)?)?;
@@ -32,11 +34,19 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<triangle::Triangle>()?;
     m.add_class::<carre::Carre>()?;
 
+
     // Validation
     m.add_function(wrap_pyfunction!(validation::valider_valeurs, m)?)?;
     m.add_function(wrap_pyfunction!(validation::valider_triangle, m)?)?;
-
     m.add_function(wrap_pyfunction!(intersection::intersecte, m)?)?;
+
+    // Triangle
+    m.add_function(wrap_pyfunction!(shapes::perimetre_triangle, m)?)?;
+    m.add_function(wrap_pyfunction!(shapes::surface_triangle, m)?)?;
+    m.add_function(wrap_pyfunction!(triangle::definir_triangle, m)?)?;
+
 
     Ok(())
 }
+
+
