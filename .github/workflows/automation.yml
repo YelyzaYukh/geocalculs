@@ -1,4 +1,4 @@
-name: Python Tests on Merge
+name: Merge testing with perimetre_cercle
 
 # Automates the tests on merge action. 
 # Quand une Pull Request est MERGÉE dans la branche main,
@@ -27,10 +27,12 @@ jobs:
 
       - name: Install dependencies
         run: |
+          python -m venv .venv
+          source .venv/bin/activate
           python -m pip install --upgrade pip
           pip install pytest
           pip install maturin
-          maturin develop
+          maturin develop --release
 
       - name: Run tests
         run: pytest -v
