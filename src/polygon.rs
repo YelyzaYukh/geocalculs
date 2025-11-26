@@ -6,7 +6,7 @@ use pyo3::prelude::*;
 #[derive(Debug, Clone)]
 
 pub struct Polygone {
-    points: Vec<(f64, f64)>,
+    pub points: Vec<(f64, f64)>,
 }
 
 #[pymethods]

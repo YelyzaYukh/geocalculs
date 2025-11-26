@@ -93,41 +93,41 @@ pub fn appartient(px: f64, py: f64, forme: &Bound<'_, PyAny>, _mode: &str) -> Py
     // ======================
     // POLYGONE
     // ======================
-    if let Ok(_) = forme.extract::<Polygone>() {
-        let pts_obj = forme.getattr("points")?;
-        let pts: Vec<(f64, f64)> = pts_obj.extract()?;
+if let Ok(poly) = forme.extract::<Polygone>() {
+    let pts = poly.points.clone(); 
 
-        let n = pts.len();
-        if n < 3 {
-            return Ok(false);
-        }
-
-        let mut inside = false;
-
-        for i in 0..n {
-            let (x1, y1) = pts[i];
-            let (x2, y2) = pts[(i+1) % n];
-
-            let cross = (px-x1)*(y2-y1) - (py-y1)*(x2-x1);
-            let dot   = (px-x1)*(x2-x1) + (py-y1)*(y2-y1);
-            let len2  = (x2-x1).powi(2) + (y2-y1).powi(2);
-
-            // Bord
-            if cross.abs() < tol && dot >= 0.0 && dot <= len2 {
-                return Ok(true);
-            }
-
-            // Ray casting
-            let intersect = ((y1 > py) != (y2 > py))
-                && (px < (x2-x1)*(py-y1)/(y2-y1 + tol) + x1);
-
-            if intersect {
-                inside = !inside;
-            }
-        }
-
-        return Ok(inside);
+    let n = pts.len();
+    if n < 3 {
+        return Ok(false);
     }
+
+    let mut inside = false;
+
+    for i in 0..n {
+        let (x1, y1) = pts[i];
+        let (x2, y2) = pts[(i+1) % n];
+
+        let cross = (px-x1)*(y2-y1) - (py-y1)*(x2-x1);
+        let dot   = (px-x1)*(x2-x1) + (py-y1)*(y2-y1);
+        let len2  = (x2-x1).powi(2) + (y2-y1).powi(2);
+
+        // Bord
+        if cross.abs() < tol && dot >= 0.0 && dot <= len2 {
+            return Ok(true);
+        }
+
+        // Ray casting
+        let intersect = ((y1 > py) != (y2 > py))
+            && (px < (x2-x1)*(py-y1)/(y2-y1 + tol) + x1);
+
+        if intersect {
+            inside = !inside;
+        }
+    }
+
+    return Ok(inside);
+}
+
 
     Err(pyo3::exceptions::PyTypeError::new_err(
         "Forme inconnue"
