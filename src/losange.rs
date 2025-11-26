@@ -1,43 +1,51 @@
 use pyo3::prelude::*;
 
-/// Permet de calculer sa surface et son périmètre.
 #[pyclass]
+#[derive(Clone)]
 pub struct Losange {
-    diagonale1: f64,
-    diagonale2: f64,
-    cote: f64,
+    #[pyo3(get, set)]
+    pub x: f64,
+    #[pyo3(get, set)]
+    pub y: f64,
+
+    #[pyo3(get, set)]
+    pub largeur: f64,
+
+    #[pyo3(get, set)]
+    pub hauteur: f64,
 }
 
 #[pymethods]
 impl Losange {
-    /// Si une valeur est négative ou nulle, lève une exception Python.
     #[new]
-    pub fn new(diagonale1: f64, diagonale2: f64, cote: f64) -> PyResult<Self> {
-        if diagonale1 <= 0.0 || diagonale2 <= 0.0 || cote <= 0.0 {
+    pub fn new(x: f64, y: f64, largeur: f64, hauteur: f64) -> PyResult<Self> {
+        if largeur <= 0.0 || hauteur <= 0.0 {
             return Err(pyo3::exceptions::PyValueError::new_err(
-                "Les dimensions du losange doivent être strictement positives",
+                "La largeur et la hauteur doivent être strictement positives",
             ));
         }
-        Ok(Losange { diagonale1, diagonale2, cote })
+
+        Ok(Self { x, y, largeur, hauteur })
     }
 
-    /// Calcule la surface du losange.
-    /// Formule : (D * d) / 2
+    /// Surface : (largeur * hauteur) / 2
     pub fn surface(&self) -> f64 {
-        (self.diagonale1 * self.diagonale2) / 2.0
+        (self.largeur * self.hauteur) / 2.0
     }
 
-    /// Calcule le périmètre du losange.
-    /// Formule : 4 × côté
+    /// Périmètre : 4 * côté (supposé losange régulier)
     pub fn perimetre(&self) -> f64 {
-        4.0 * self.cote
+        // Formule approchée du côté à partir des demi-diagonales
+        let a = self.largeur / 2.0;
+        let b = self.hauteur / 2.0;
+        let cote = (a * a + b * b).sqrt();
+        4.0 * cote
     }
 
-    /// Affiche un résumé textuel de l’objet.
     pub fn description(&self) -> String {
         format!(
-            "Losange(diagonales: ({}, {}), côté: {})",
-            self.diagonale1, self.diagonale2, self.cote
+            "Losange(centre=({}, {}), largeur={}, hauteur={})",
+            self.x, self.y, self.largeur, self.hauteur
         )
     }
 }

@@ -4,7 +4,7 @@ use pyo3::prelude::*;
 /// Une classe représentant un polygone arbitraire défini par une liste de points.
 #[pyclass]
 pub struct Polygone {
-    points: Vec<(f64, f64)>,
+    pub points: Vec<(f64, f64)>,
 }
 
 #[pymethods]
