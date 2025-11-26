@@ -6,9 +6,9 @@ use pyo3::prelude::*;
 #[derive(Debug, Clone)]
 pub struct Carre {
     #[pyo3(get, set)]
-    pub x: f64,      // coordonnée X du coin supérieur gauche
+    pub x: f64, // coordonnée X du coin supérieur gauche optionnel
     #[pyo3(get, set)]
-    pub y: f64,      // coordonnée Y du coin supérieur gauche
+    pub y: f64, // coordonnée Y du coin supérieur gauche optionnel
     #[pyo3(get, set)]
     pub cote: f64,   // longueur du côté
 }
@@ -16,14 +16,18 @@ pub struct Carre {
 #[pymethods]
 impl Carre {
     #[new]
-    fn new(x: f64, y: f64, cote: f64) -> PyResult<Self> {
+    fn new(x: Option<f64>, y: Option<f64>, cote: f64) -> PyResult<Self> {
+        // Default values 0.0 if not provided
+        let x_val = x.unwrap_or(0.0);
+        let y_val = y.unwrap_or(0.0);
+
         if cote < 0.0 {
             return Err(PyValueError::new_err("Le côté doit être positif."));
         }
-        if x < 0.0 || y < 0.0 {
+        if x_val < 0.0 || y_val < 0.0 {
             return Err(PyValueError::new_err("Les coordonnées du coin supérieur gauche doivent être positives."));
         }
-        Ok(Self { x, y, cote })
+        Ok(Self { x: x_val, y: y_val, cote })
     }
 
     /// Calcule le périmètre du carré
