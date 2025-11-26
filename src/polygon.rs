@@ -1,4 +1,4 @@
-// src/polygon.rs
+    // src/polygon.rs
 use pyo3::prelude::*;
 
 /// Une classe représentant un polygone arbitraire défini par une liste de points.

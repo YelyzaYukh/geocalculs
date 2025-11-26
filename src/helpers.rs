@@ -19,36 +19,29 @@ impl Point {
 }
 
 /// Helper 1 : orientation(A, B, C)
-
 #[pyfunction]
-pub fn orientation(a: &Point, b: &Point, c: &Point) -> i32 {
+pub fn orientation(a: PyRef<Point>, b: PyRef<Point>, c: PyRef<Point>) -> i32 {
     let val = (b.y - a.y) * (c.x - b.x) - (b.x - a.x) * (c.y - b.y);
 
     if val.abs() < 1e-9 {
-        0
+        0   // colinéaire
     } else if val > 0.0 {
-        1
+        1   // orientation horaire
     } else {
-        2
+        2   // orientation anti-horaire
     }
 }
 
-/// -----------------------------------------------------------
 /// Helper 2 : on_segment(A, B, C)
-/// -----------------------------------------------------------
-/// Vérifie si C est sur le segment AB
-/// -----------------------------------------------------------
 #[pyfunction]
-pub fn on_segment(a: &Point, b: &Point, c: &Point) -> bool {
+pub fn on_segment(a: PyRef<Point>, b: PyRef<Point>, c: PyRef<Point>) -> bool {
     (c.x >= a.x.min(b.x) - 1e-9)
         && (c.x <= a.x.max(b.x) + 1e-9)
         && (c.y >= a.y.min(b.y) - 1e-9)
         && (c.y <= a.y.max(b.y) + 1e-9)
 }
 
-/// -----------------------------------------------------------
-/// Helper 3 : AABB → Axis Aligned Bounding Box
-/// -----------------------------------------------------------
+/// Helper 3 : AABB (Axis-Aligned Bounding Box)
 #[pyclass]
 #[derive(Debug, Clone, Copy)]
 pub struct AABB {
@@ -66,7 +59,7 @@ pub struct AABB {
 impl AABB {
     /// Création depuis 2 points
     #[new]
-    fn new(p1: &Point, p2: &Point) -> Self {
+    fn new(p1: PyRef<Point>, p2: PyRef<Point>) -> Self {
         Self {
             min_x: p1.x.min(p2.x),
             min_y: p1.y.min(p2.y),
@@ -76,7 +69,7 @@ impl AABB {
     }
 
     /// Vérifie si un point est dans l'AABB
-    pub fn contains(&self, p: &Point) -> bool {
+    pub fn contains(&self, p: PyRef<Point>) -> bool {
         p.x >= self.min_x
             && p.x <= self.max_x
             && p.y >= self.min_y
