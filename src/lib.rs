@@ -14,7 +14,7 @@ mod intersection;
 #[pymodule]
 fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
-    // Fonctions rectangle
+    // Fonction rectangle
     m.add_function(wrap_pyfunction!(rectangle::definir_rectangle, m)?)?;
     m.add_function(wrap_pyfunction!(shapes::perimetre_rectangle, m)?)?;
     m.add_function(wrap_pyfunction!(shapes::surface_rectangle, m)?)?;
