@@ -90,9 +90,9 @@ def test_distance_rectangle_cercle_separe():
 # --- Rectangle ↔ Triangle ---
 def test_distance_rectangle_triangle():
     rect = g.Rectangle(0, 0, 4, 4)
-    tri = g.Triangle(10, 0, 10, 2, 10, 4)
+    tri = g.Triangle(5, 0, 6, 1, 5, 2)
     d = g.dist_rectangle_triangle(rect, tri)
-    assert math.isclose(d, 6, rel_tol=1e-9)
+    assert math.isclose(d, 1, rel_tol=1e-9)
 
 
 # --- Rectangle ↔ Polygone ---

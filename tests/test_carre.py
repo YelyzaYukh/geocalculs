@@ -95,7 +95,7 @@ def test_dist_carre_carre_separe():
 # --- Carré ↔ Triangle ---
 def test_dist_carre_triangle():
     carre = g.Carre(0, 0, 2)
-    tri = g.Triangle(5, 0, 5, 1, 5, 2)
+    tri = g.Triangle(5, 0, 6, 1, 5, 2)
     d = g.dist_carre_triangle(carre, tri)
     assert d == 3
 

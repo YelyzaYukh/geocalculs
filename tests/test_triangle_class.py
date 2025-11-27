@@ -7,11 +7,11 @@ def test_triangle_valide():
     # Triangle rectangle classique (3-4-5)
     # A=(0,0), B=(3,0), C=(0,4)
     t = geo.Triangle(0, 0, 3, 0, 0, 4)
-    
+
     # Vérification des attributs
     assert t.ax == 0.0
     assert t.ay == 0.0
-    
+
     # Vérification des calculs
     # Périmètre = 3 + 4 + 5 = 12
     assert math.isclose(t.perimetre(), 12.0, rel_tol=1e-9)

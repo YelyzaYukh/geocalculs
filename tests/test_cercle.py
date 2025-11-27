@@ -108,7 +108,7 @@ def test_dist_cercle_carre_separe():
 
 # --- Cercle ↔ Triangle ---
 def test_dist_cercle_triangle():
-    tri = g.Triangle(5, 0, 5, 2, 5, 4)
+    tri = g.Triangle(5, 0, 6, 1, 5, 2)
     c = g.Cercle(0, 0, 1)
     d = g.dist_cercle_triangle(c, tri)
     assert math.isclose(d, 4, rel_tol=1e-9)  # distance du point (5,0) au cercle

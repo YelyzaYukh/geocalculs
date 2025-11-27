@@ -112,9 +112,9 @@ def test_dist_polygone_cercle_separe():
 # --- Polygone ↔ Triangle ---
 def test_dist_polygone_triangle():
     poly = g.Polygone([(0,0), (4,0), (4,4), (0,4)])
-    tri = g.Triangle(10,0, 10,1, 10,2)
+    tri = g.Triangle(5, 0, 6, 1, 5, 2)
     d = g.dist_triangle_polygone(tri, poly)
-    assert math.isclose(d, 6, rel_tol=1e-9)
+    assert math.isclose(d, 1, rel_tol=1e-9)
 
 
 # --- Polygone ↔ Polygone ---

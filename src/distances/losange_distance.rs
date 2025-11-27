@@ -12,18 +12,13 @@ use crate::distances::rectangle_distance::{
     dist_rect_rect,
 };
 
-use crate::distances::cercle_distance::{
-    dist_point_cercle,
-    dist_cercle_cercle,
-};
+
 
 use crate::distances::carre_distance::carre_to_rect;
 
 use pyo3::prelude::*;
 
-/// ===============================================================
-///     Convertir LOSANGE → RECTANGLE englobant (AABB)
-/// ===============================================================
+
 fn losange_to_rect(l: &Losange) -> Rectangle {
     Rectangle {
         x: l.x - l.largeur / 2.0,
@@ -41,18 +36,14 @@ fn points_polygone(p: &Polygone) -> Vec<Point> {
         .collect()
 }
 
-/// ===============================================================
-///                     LOSANGE ↔ POINT
-/// ===============================================================
+
 #[pyfunction]
 pub fn dist_point_losange(p: &Point, l: &Losange) -> f64 {
     let rect = losange_to_rect(l);
     dist_point_rectangle(p, &rect)
 }
 
-/// ===============================================================
-///                     LOSANGE ↔ CERCLE
-/// ===============================================================
+
 #[pyfunction]
 pub fn dist_losange_cercle(l: &Losange, c: &Cercle) -> f64 {
     // On convertit le losange en rectangle
@@ -71,18 +62,14 @@ pub fn dist_losange_cercle(l: &Losange, c: &Cercle) -> f64 {
     (d - c.rayon).max(0.0)
 }
 
-/// ===============================================================
-///                     LOSANGE ↔ RECTANGLE
-/// ===============================================================
+
 #[pyfunction]
 pub fn dist_losange_rectangle(l: &Losange, r: &Rectangle) -> f64 {
     let rect_l = losange_to_rect(l);
     dist_rect_rect(&rect_l, r)
 }
 
-/// ===============================================================
-///                     LOSANGE ↔ CARRE
-/// ===============================================================
+
 #[pyfunction]
 pub fn dist_losange_carre(l: &Losange, c: &Carre) -> f64 {
     let rect_l = losange_to_rect(l);
@@ -90,9 +77,7 @@ pub fn dist_losange_carre(l: &Losange, c: &Carre) -> f64 {
     dist_rect_rect(&rect_l, &rect_c)
 }
 
-/// ===============================================================
-///                     LOSANGE ↔ TRIANGLE
-/// ===============================================================
+
 #[pyfunction]
 pub fn dist_losange_triangle(l: &Losange, t: &Triangle) -> f64 {
     let rect = losange_to_rect(l);
@@ -108,9 +93,7 @@ pub fn dist_losange_triangle(l: &Losange, t: &Triangle) -> f64 {
         .fold(f64::INFINITY, f64::min)
 }
 
-/// ===============================================================
-///                     LOSANGE ↔ POLYGONE
-/// ===============================================================
+
 #[pyfunction]
 pub fn dist_losange_polygone(l: &Losange, p: &Polygone) -> f64 {
     let rect = losange_to_rect(l);
@@ -121,11 +104,7 @@ pub fn dist_losange_polygone(l: &Losange, p: &Polygone) -> f64 {
         .fold(f64::INFINITY, f64::min)
 }
 
-/// ===============================================================
-///                     LOSANGE ↔ LOSANGE
-/// ===============================================================
-/// 2 losanges → convertis en rectangles englobants (AABB)
-/// puis on réutilise dist_rect_rect
+
 #[pyfunction]
 pub fn dist_losange_losange(l1: &Losange, l2: &Losange) -> f64 {
     let r1 = losange_to_rect(l1);
