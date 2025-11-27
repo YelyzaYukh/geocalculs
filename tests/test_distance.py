@@ -9,7 +9,7 @@ def test_distance_2d_classique():
 def test_distance_2d_zero():
     d = geocalculs.distance_2d(2.5, 2.5, 2.5, 2.5)
     attendu = 0.0
-    assert d == attendu, "Les deux points sont identiques, distance = 0"
+    assert d == attendu, "Les deux points sont identiques, distances = 0"
 
 def test_distance_2d_flottant():
     d = geocalculs.distance_2d(1.2, 3.4, 5.6, 7.8)
@@ -19,4 +19,4 @@ def test_distance_2d_flottant():
 def test_distance_2d_symetrique():
     ab = geocalculs.distance_2d(1, 2, 4, 6)
     ba = geocalculs.distance_2d(4, 6, 1, 2)
-    assert ab == ba, f"La distance doit être symétrique : AB={ab}, BA={ba}"
+    assert ab == ba, f"La distances doit être symétrique : AB={ab}, BA={ba}"
