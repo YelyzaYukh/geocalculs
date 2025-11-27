@@ -12,6 +12,7 @@ mod carre;
 mod helpers;
 mod intersection;
 mod distances;
+pub mod triangle_plat;
 
 #[pymodule]
 fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -83,7 +84,7 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(distances::polygon_distance::dist_carre_polygone, m)?)?;
     m.add_function(wrap_pyfunction!(distances::polygon_distance::dist_rectangle_polygone, m)?)?;
     m.add_function(wrap_pyfunction!(distances::polygon_distance::dist_cercle_polygone, m)?)?;
-    m.add_function(wrap_pyfunction!(distances::polygon_distance::dist_triangle_polygone, m)?)?;
+    m.add_function(wrap_pyfunction!(distances::polygon_distance::distance_triangle_polygone_py, m)?)?;
     m.add_function(wrap_pyfunction!(distances::polygon_distance::dist_poly_poly, m)?)?;
     m.add_function(wrap_pyfunction!(distances::polygon_distance::dist_point_polygone, m)?)?;
 

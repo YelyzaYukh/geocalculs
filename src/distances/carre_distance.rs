@@ -4,6 +4,9 @@ use crate::cercle::Cercle;
 use crate::triangle::Triangle;
 use crate::helpers::Point;
 
+use crate::triangle_plat::TrianglePlat;
+use crate::distances::rectangle_distance::dist_segment_rectangle;
+
 use crate::distances::rectangle_distance::dist_rect_rect;
 use crate::distances::rectangle_distance::dist_point_rectangle;
 
@@ -63,7 +66,15 @@ pub fn dist_carre_carre(c1: &Carre, c2: &Carre) -> f64 {
 pub fn dist_carre_triangle(c: &Carre, t: &Triangle) -> f64 {
     let rect = carre_to_rect(c);
 
-    // Points du triangle
+    // Convertir Triangle → TrianglePlat
+    let tri = TrianglePlat::new(t.ax, t.ay, t.bx, t.by, t.cx, t.cy);
+
+    // Si triangle plat → distance segment / rectangle
+    if tri.is_degenerate() {
+        return dist_segment_rectangle(&tri, &rect);
+    }
+
+    // Sinon distance classique : sommets → rectangle
     let a = Point { x: t.ax, y: t.ay };
     let b = Point { x: t.bx, y: t.by };
     let cpt = Point { x: t.cx, y: t.cy };

@@ -39,7 +39,7 @@ impl Triangle {
     #[new]
     pub fn new(ax: f64, ay: f64, bx: f64, by: f64, cx: f64, cy: f64) -> PyResult<Self> {
 
-        // ❌ Interdiction : points identiques
+        //  Interdiction : points identiques
         if (ax == bx && ay == by) ||
             (bx == cx && by == cy) ||
             (ax == cx && ay == cy)
@@ -49,9 +49,15 @@ impl Triangle {
             ));
         }
 
+        // Interdiction : triangle dégénéré (points alignés)
+         let aire = (bx - ax) * (cy - ay) - (cx - ax) * (by - ay);
+        if aire.abs() < 1e-12 {
+        return Err(pyo3::exceptions::PyValueError::new_err(
+            "Les trois points ne doivent pas être alignés (triangle dégénéré)."
+        ));
+        }
 
-
-        // ❗ IMPORTANT :
+        //  IMPORTANT :
         // Ne pas refuser les triangles alignés !
         // Les tests utilisent des triangles plats pour les distances.
 

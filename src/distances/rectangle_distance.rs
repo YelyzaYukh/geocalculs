@@ -1,6 +1,8 @@
 use crate::rectangle::Rectangle;
 use crate::helpers::Point;
 use pyo3::prelude::*;
+use crate::triangle_plat::TrianglePlat;
+
 
 #[pyfunction]
 pub fn dist_point_rectangle(p: &Point, r: &Rectangle) -> f64 {
@@ -95,3 +97,17 @@ pub fn dist_rectangle_polygone(r: &Rectangle, poly: &crate::polygon::Polygone) -
 
     min_dist
 }
+
+#[pyfunction]
+pub fn dist_segment_rectangle(seg: &TrianglePlat, rect: &Rectangle) -> f64 {
+    let (x1, y1, x2, y2) = seg.segment();
+
+    let p1 = Point { x: x1, y: y1 };
+    let p2 = Point { x: x2, y: y2 };
+
+    let d1 = dist_point_rectangle(&p1, rect);
+    let d2 = dist_point_rectangle(&p2, rect);
+
+    d1.min(d2)
+}
+

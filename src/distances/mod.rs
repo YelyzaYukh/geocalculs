@@ -5,7 +5,9 @@ pub mod triangle_distance;
 pub mod cercle_distance;
 pub mod polygon_distance;
 pub mod losange_distance;
+pub mod segment_distance;
 
+pub use segment_distance::dist_segment_point;
 use pyo3::prelude::*;
 use pyo3::exceptions::PyTypeError;
 
