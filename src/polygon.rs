@@ -1,8 +1,10 @@
-    // src/polygon.rs
+    // Src/polygon.rs
 use pyo3::prelude::*;
 
 /// Une classe représentant un polygone arbitraire défini par une liste de points.
 #[pyclass]
+#[derive(Debug, Clone)]
+
 pub struct Polygone {
     pub points: Vec<(f64, f64)>,
 }

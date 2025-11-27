@@ -1,5 +1,7 @@
 import pytest
 import geocalculs as g
+import math
+
 
 #  Test de création valide
 def test_creation_valide():
@@ -154,3 +156,4 @@ def test_distance_losange_losange_separe():
     los2 = g.Losange(10, 10, 4, 4)
     d = g.dist_losange_losange(los1, los2)
     assert d > 0
+

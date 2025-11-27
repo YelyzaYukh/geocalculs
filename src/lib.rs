@@ -12,6 +12,7 @@ mod carre;
 mod helpers;
 mod intersection;
 mod distances;
+mod appartenance;
 
 #[pymodule]
 fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -46,6 +47,7 @@ fn geocalculs(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     // Intersections
     m.add_function(wrap_pyfunction!(intersection::intersecte, m)?)?;
+    m.add_function(wrap_pyfunction!(appartenance::appartient, m)?)?;
 
     // DISTANCES — CARRÉ
     m.add_function(wrap_pyfunction!(distances::carre_distance::dist_carre_cercle, m)?)?;
