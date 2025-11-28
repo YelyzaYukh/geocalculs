@@ -6,7 +6,7 @@ use pyo3::prelude::*;
 /// - centre_y : coordonnée Y du centre
 /// - rayon : rayon du cercle (doit être positif)
 #[pyclass]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Cercle {
     #[pyo3(get, set)]
     pub centre_x: f64,

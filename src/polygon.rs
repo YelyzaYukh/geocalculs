@@ -3,9 +3,9 @@ use pyo3::exceptions::PyValueError;
 
 /// Une classe représentant un polygone arbitraire défini par une liste de points.
 #[pyclass]
-#[derive(Debug, Clone)]
-
+#[derive(Clone)]
 pub struct Polygone {
+    #[pyo3(get, set)]
     pub points: Vec<(f64, f64)>,
 }
 

@@ -1,3 +1,6 @@
+import geocalculs as g
+import pytest
+
 import pytest
 import geocalculs as g
 
@@ -8,11 +11,11 @@ def test_polygone_concave_forme_en_u():
     """
     On dessine un "U" ou un "Pot de fleur".
     Il est plein sur les bords, mais vide au milieu.
-    
+
     Structure du U (4x4) :
     Largeur des murs : 1
     Vide central : entre x=1 et x=3, à partir de y=1
-    
+
       (0,4)       (1,4)       (3,4)       (4,4)
         +-----------+           +-----------+
         |   MUR G   |   VIDE    |   MUR D   |
@@ -35,14 +38,14 @@ def test_polygone_concave_forme_en_u():
 
     # --- A. Collision DANS le mur (Doit être VRAI) ---
     # Un petit carré placé dans le mur de gauche
-    objet_dans_mur = g.Carre(0.2, 2, 0.5) 
+    objet_dans_mur = g.Carre(0.2, 2, 0.5)
     assert g.intersecte(forme_u, objet_dans_mur) is True, \
         "ÉCHEC: L'objet est dans le mur gauche, il devrait être détecté."
 
     # --- B. Collision DANS le vide (Doit être FAUX) ---
     # C'est LE test qui prouve que ta triangulation fonctionne.
     # Un petit carré placé au milieu du U (x=2, y=2)
-    objet_dans_vide = g.Carre(1.8, 2, 0.4) 
+    objet_dans_vide = g.Carre(1.8, 2, 0.4)
     assert g.intersecte(forme_u, objet_dans_vide) is False, \
         "ÉCHEC: L'objet est dans le vide du U, il NE devrait PAS être détecté (Problème de triangulation ?)."
 
@@ -79,7 +82,7 @@ def test_polygone_vs_cercle():
 # ==========================================
 def test_formes_simples():
     """Vérifie que les rectangles et carrés marchent toujours"""
-    
+
     # Rectangle vs Rectangle
     r1 = g.Rectangle(0, 0, 10, 10)
     r2 = g.Rectangle(5, 5, 10, 10) # Chevauchement
@@ -102,7 +105,7 @@ def test_inclusion():
     """Un petit objet entièrement dans un grand"""
     grand = g.Rectangle(0, 0, 100, 100)
     petit = g.Triangle(10, 10, 20, 10, 15, 20)
-    
+
     assert g.intersecte(grand, petit) is True
     assert g.intersecte(petit, grand) is True # Symétrie
 
@@ -139,11 +142,11 @@ def test_toucher_juste():
     """
     # Carré gauche [0,0] -> [2,2]
     c1 = g.Carre(0, 0, 2)
-    
+
     # Carré droite [2,0] -> [4,2]
     # Ils partagent la ligne x=2
     c2 = g.Carre(2, 0, 2)
-    
+
     assert g.intersecte(c1, c2) is True
 
 
@@ -182,17 +185,17 @@ def test_etoile_concave():
 
 if __name__ == "__main__":
     print("🚀 Lancement des tests complets d'intersection...")
-    
+
     try:
         test_polygone_concave_forme_en_u()
         print("Test Concave (Forme en U) : SUCCÈS")
-        
+
         test_polygone_vs_cercle()
         print("Test Polygone vs Cercle : SUCCÈS")
-        
+
         test_formes_simples()
         print("Test Formes Simples : SUCCÈS")
-        
+
         test_inclusion()
         print("Test Inclusion : SUCCÈS")
 
@@ -205,8 +208,8 @@ if __name__ == "__main__":
         test_etoile_concave()
         print("Test etoile concave : SUCCÈS")
 
-        
+
         print("\nTOUS LES TESTS SONT PASSÉS ! Ton moteur est robuste.")
-        
+
     except AssertionError as e:
         print(f"\néCHEC : {e}")
