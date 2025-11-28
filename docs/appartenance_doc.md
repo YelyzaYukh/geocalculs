@@ -1,3 +1,5 @@
+## Auteur : **ARIOUI Mohamed Achraf**
+
 # Documentation : Fonction `appartient`
 
 Cette fonction détermine si un point de coordonnées `(px, py)`
@@ -99,7 +101,8 @@ Utilise deux tests :
 2.  Algorithme du rayon (ray casting) :
 
 ```{=html}
-<!-- -->
+((y1 > py) != (y2 > py))
+&& (px < (x2 - x1) * (py - y1) / (y2 - y1 + tol) +
 ```
     Si le rayon horizontal croise un nombre impair d’arêtes → point intérieur
 

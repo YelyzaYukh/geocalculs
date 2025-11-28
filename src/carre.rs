@@ -20,9 +20,6 @@ impl Carre {
         if cote < 0.0 {
             return Err(PyValueError::new_err("Le côté doit être positif."));
         }
-        if x < 0.0 || y < 0.0 {
-            return Err(PyValueError::new_err("Les coordonnées du coin supérieur gauche doivent être positives."));
-        }
         Ok(Self { x, y, cote })
     }
 
