@@ -1,132 +1,141 @@
-# GeoLib2D
+# GeoCalculs 
 
-GeoLib2D est une bibliothèque de calculs géométriques 2D à hautes performances, développée en *Rust* et accessible depuis *Python* grâce à la bibliothèque [PyO3](https://pyo3.rs/).  
-Elle permet d’effectuer des opérations géométriques essentielles telles que le calcul de distances, de surfaces, de périmètres, de tests d’appartenance et d’intersections entre formes, tout en combinant la rapidité du langage Rust avec la simplicité d’utilisation de Python.
+**Bibliothèque de géométrie haute performance pour Python, propulsée par Rust.**
 
----
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)]()
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue)]()
+[![Rust](https://img.shields.io/badge/backend-Rust-orange)]()
 
-## Objectifs du projet
+##  Présentation
 
-Le projet GeoLib2D vise à fournir une bibliothèque :
+**GeoCalculs** est une bibliothèque Python conçue pour les calculs géométriques intensifs et la physique 2D. Elle combine la **simplicité de Python** avec la **performance brute de Rust**.
 
-- rapide et fiable pour le calcul géométrique 2D ;
-- réutilisable et modulaire ;
-- intégrable facilement dans un environnement Python ;
-- accompagnée d’une documentation claire et de tests unitaires.
+Contrairement aux bibliothèques classiques, GeoCalculs implémente des algorithmes avancés pour garantir précision et rapidité :
+- **Théorème des Axes Séparateurs (SAT)** pour la détection de collision ultra-rapide.
+- **Triangulation (Ear Clipping)** pour gérer les formes concaves complexes sans erreur.
 
-Ce projet est réalisé dans le cadre d’un travail pratique encadré suivant la méthodologie *Scrum*.  
-Le professeur joue le rôle de *client / Product Owner*, et l’équipe de développement est responsable de la conception, de l’implémentation et des tests.
-
----
-
-## Fonctionnalités principales
-
-| Catégorie | Fonctions principales | Description |
-|------------|-----------------------|--------------|
-| Calculs de base | distance_2d | Calcule la distance entre deux points en 2D |
-| Formes géométriques | surface_rectangle, surface_cercle, surface_triangle, etc. | Calcule les périmètres et surfaces des formes courantes |
-| Appartenance | appartient(point, formes, mode) | Vérifie si un point appartient à une ou plusieurs formes (rectangle, cercle, polygone) |
-| Intersections | intersecte(formeA, formeB, mode) | Détecte les intersections entre différentes formes (rectangle, cercle, polygone, etc.) |
-| Fonctions utilitaires | orientation, on_segment, AABB | Fournit des fonctions géométriques de base réutilisables |
-| Documentation interne | decrire_forme(forme) | Fournit les formules et explications associées à chaque forme |
-| Interface en ligne de commande | geolib | Permet d’utiliser la bibliothèque sans coder en Python |
+### Pourquoi utiliser GeoCalculs ?
+* **Ultra-Rapide :** Le cœur mathématique est compilé en code machine (Rust).
+* **Robuste :** Validation stricte des formes (anti-auto-intersection, anti-colinéarité).
+* **Moteur Physique :** Détection de collision précise (pixel-perfect) et calcul de distances minimales.
+* **Universel :** Gérez des interactions entre n'importe quelles formes (Cercle vs Polygone, Losange vs Triangle, etc.).
 
 ---
 
-## Technologies utilisées
+##  Installation
 
-- *Langage principal* : Rust (pour les calculs)
-- *Interface* : PyO3 (bindings Python ↔ Rust)
-- *Gestion de projet* : maturin (compilation et packaging)
-- *Tests* : pytest (tests unitaires Python)
-- *Documentation* : pdoc ou Sphinx
-- *Compatibilité* : Python 3.8 ou supérieur
-
----
-
-## Installation
-
-Lorsque la bibliothèque est compilée ou publiée sur PyPI :
+Vous pouvez installer la bibliothèque directement via le fichier `.whl` fourni :
 
 ```bash
-pip install geolib2d
-Utilisation dans Python :
+pip install geocalculs-0.1.0-cp310-cp310-manylinux_x86_64.whl
+```
+(Pour les développeurs souhaitant compiler depuis la source) :
 
-python
-Copier le code
-import geolib2d as geo
+```bash
+maturin develop --release
+```
 
-print(geo.distance_2d(0, 0, 3, 4))  # 5.0
-Développement local
-Cloner le dépôt et installer la version de développement :
+##  Fonctionnalités
 
-bash
-Copier le code
-git clone https://github.com/<votre-utilisateur>/geolib2d.git
-cd geolib2d
-maturin develop
-Exécuter les tests :
+### 1. Formes Supportées
+Toutes les formes sont définies comme des objets manipulables avec validation intégrée.
 
+* **Point** `(x, y)`
+* **Cercle** `(centre_x, centre_y, rayon)`
+* **Carré** `(x, y, côté)`
+* **Rectangle** `(x, y, largeur, hauteur)`
+* **Triangle** `(ax, ay, bx, by, cx, cy)`
+* **Losange** `(x, y, largeur, hauteur)`
+* **Polygone** `(liste de points)` — *Supporte les formes concaves et convexes.*
 
+### 2. Calculs & Physique
+* **Surface & Périmètre** (Formule de Héron, Formule du Lacet).
+* **Intersection (`intersecte`)** : Détecte si deux objets se touchent ou se chevauchent.
+    * Utilise le **SAT** pour les formes convexes.
+    * Utilise la **Triangulation** pour les formes concaves.
+* **Inclusion (`appartient`)** : Vérifie si un point est à l'intérieur d'une forme.
+* **Distance Minimale** : Calcule la distance la plus courte entre les bords de deux formes quelconques.
+
+---
+
+##  Exemples d'Utilisation
+
+### 1. Création et Calculs de base
+
+```python
+import geocalculs as g
+
+# Création d'un rectangle
+rect = g.Rectangle(0, 0, 10, 5) # x, y, w, h
+
+print(f"Surface : {rect.surface()}")      # 50.0
+print(f"Périmètre : {rect.perimetre()}")  # 30.0
+```
+# Création d'un polygone (Hexagone)
+points = [(1,0), (0.5, 0.86), (-0.5, 0.86), (-1,0), (-0.5, -0.86), (0.5, -0.86)]
+hexagone = g.Polygone(points)
+
+### 2. Détection de Collision (Intersection)
+
+Le moteur gère intelligemment les collisions, même pour des formes complexes.
+
+```python
+# Un Triangle qui "pique" dans un Rectangle
+rect = g.Rectangle(0, 0, 4, 2)
+tri  = g.Triangle(2, 1,  2, 4,  4, 4) # La pointe (2,1) est DANS le rectangle
+
+if g.intersecte(rect, tri):
+    print("BOUM ! Collision détectée ")
+else:
+    print("Les formes sont séparées.")
+
+```
+### 3. Gestion des Polygones Concaves (Forme en "U")
+
+GeoCalculs sait qu'un polygone concave a des "trous". Il ne détectera pas de collision dans le vide.
+
+```python
+# Forme en "U" (Concave)
+points_u = [(0,0), (4,0), (4,4), (3,4), (3,1), (1,1), (1,4), (0,4)]
+forme_u = g.Polygone(points_u)
+
+# Objet placé dans le "creux" du U (ne touche pas les murs)
+objet_dans_le_vide = g.Carre(1.5, 2, 0.5)
+
+# Résultat : False (Pas de collision, car on est dans le vide !)
+print(g.intersecte(forme_u, objet_dans_le_vide))
+
+### 4. Calcul de Distance
+
+```python
+# Distance entre un Cercle et un Carré
+cercle = g.Cercle(0, 0, 1)  # Rayon 1, à l'origine
+carre = g.Carre(10, 0, 2)   # Loin sur l'axe X
+
+dist = g.dist_cercle_carre(cercle, carre)
+print(f"Distance minimale : {dist}") # Résultat précis
+```
+
+## Architecture Technique
+
+Ce projet utilise une architecture hybride pour maximiser la performance :
+
+1.  **Frontend Python (`.pyi`)** : Fournit une interface claire et l'autocomplétion pour les IDE modernes.
+2.  **Backend Rust** :
+    * **Moteur SAT** : Algorithme d'intersection ultra-rapide basé sur les projections d'ombres.
+    * **Ear Clipping** : Algorithme de décomposition qui découpe dynamiquement les polygones complexes en triangles simples pour des calculs fiables.
+
+---
+
+## Tests
+
+La fiabilité est garantie par une suite de tests unitaires complète (Pytest).
+
+```bash
+# Lancer tous les tests
 pytest
-Structure du projet
-bash
-Copier le code
-geolib2d/
-├── src/                 # Code source Rust
-│   ├── lib.rs           # Point d’entrée du module PyO3
-│   ├── distance.rs      # Fonctions de distance
-│   ├── shapes.rs        # Définitions des formes (Rectangle, Cercle, Polygone)
-│   ├── appartient.rs    # Fonctions de test d’appartenance
-│   ├── intersecte.rs    # Fonctions d’intersection
-│   └── helpers.rs       # Fonctions utilitaires (AABB, orientation, etc.)
-├── tests/               # Tests unitaires en Python (pytest)
-│   ├── test_distance.py
-│   ├── test_appartient.py
-│   └── test_intersecte.py
-├── docs/                # Documentation générée ou rédigée
-│   └── index.md
-├── Cargo.toml           # Configuration du projet Rust
-├── pyproject.toml       # Configuration du projet Python
-└── README.md
-Exemple d’utilisation
-python
-Copier le code
-from geolib2d import distance_2d, surface_rectangle, appartient, intersecte
 
-# Calculs de base
-print(distance_2d(0, 0, 3, 4))  # 5.0
-
-# Surface et périmètre
-print(surface_rectangle(4, 6))  # 24.0
-
-# Test d’appartenance
-point = (2, 2)
-formes = [
-    {"type": "rectangle", "x": 0, "y": 0, "w": 10, "h": 5},
-    {"type": "cercle", "cx": 5, "cy": 2, "r": 3},
-]
-print(appartient(point, formes, mode="report"))
-
-# Test d’intersection
-r1 = {"type": "rectangle", "x": 0, "y": 0, "w": 4, "h": 3}
-r2 = {"type": "rectangle", "x": 3, "y": 2, "w": 4, "h": 3}
-print(intersecte(r1, r2, mode="boolean"))  # True
-Organisation du développement (méthode Scrum)
-Sprint	Objectif principal	Livrables attendus
-1	Initialisation du projet	Choix technologique, création du dépôt, rédaction du backlog
-2	Calculs géométriques de base	Distance, périmètres, surfaces, validation et tests unitaires
-3	Tests d’appartenance et helpers	Fonction appartient, helpers (on_segment, orientation, AABB)
-4	Gestion des intersections	Fonction intersecte pour toutes les formes et tests associés
-5	Finalisation	CLI, logs, documentation, démonstration finale
-
-Équipe de développement
-Scrum Master : Mohammed Djellouli
-
-Product Owner (Client) : Enseignant encadrant
-
-Développeurs : Équipe projet (3 à 4 membres)
-
-Licence
-Ce projet est distribué sous licence MIT.
-L’utilisation, la modification et la redistribution sont autorisées, sous réserve de mentionner les auteurs originaux.
+# Lancer les tests d'intersection spécifiques
+pytest tests/test_intersection.py
+```
+   
