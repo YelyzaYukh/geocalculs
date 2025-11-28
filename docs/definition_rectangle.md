@@ -20,130 +20,117 @@ Chaque fonction documentée inclut :
 ### Fonction documentée : `definir_rectangle`
 
 ---
+# Documentation : Structure `Rectangle`
 
-##  Objectif
+La structure `Rectangle` représente un rectangle défini par un coin d’origine et deux dimensions strictement positives.  
+Elle est exposée à Python via PyO3 dans le cadre du projet *GeoCalculs*.  
+Elle permet :
 
-Implémenter une fonction permettant de **définir et valider un rectangle** à partir de sa largeur et sa hauteur.
+- la création d’un rectangle
+- le calcul du périmètre
+- le calcul de la surface
+- la construction d’un rectangle à partir de deux coins
+- la construction d’un rectangle à partir de son centre
 
-La fonction vérifie :
+------------------------------------------------------------------------
 
-- ✔ largeur strictement positive
-- ✔ hauteur strictement positive
-- ✔ retourne une erreur claire en cas d’invalidité
-- ✔ fonction utilisable directement depuis **Python**
+# Définition
 
----
+Un rectangle est défini par les valeurs :
 
-##  Règles et propriétés mathématiques
+- `x` — coordonnée X du coin d’origine
+- `y` — coordonnée Y du coin d’origine
+- `largeur` — largeur du rectangle (strictement positive)
+- `hauteur` — hauteur du rectangle (strictement positive)
 
-Un rectangle est valide si :
+Toute tentative de création avec une dimension nulle ou négative renvoie une erreur :
 
-```
-largeur > 0
-hauteur > 0
-```
+ValueError("Les dimensions doivent être strictement positives.")
 
-Formules :
+------------------------------------------------------------------------
 
-```
+# Constructeurs disponibles
+
+## 1. Constructeur standard
+Création classique d’un rectangle à partir des valeurs `(x, y, largeur, hauteur)`.
+
+## 2. Constructeur par coins opposés
+Permet de construire un rectangle à partir de deux points `(x1, y1)` et `(x2, y2)` :
+- les coordonnées minimales donnent le coin d’origine
+- la largeur/hauteur sont obtenues par valeurs absolues
+
+Cas invalides (même point → largeur ou hauteur nulle) renvoient une erreur.
+
+## 3. Constructeur par centre
+Création d’un rectangle à partir de son centre `(cx, cy)` et de ses dimensions :
+- le coin d’origine est calculé en retirant la moitié des dimensions
+- les dimensions doivent être strictement positives
+
+------------------------------------------------------------------------
+
+# Méthodes disponibles
+
+## 1. Calcul du périmètre
+
+Le périmètre d’un rectangle est donné par :
+
 P = 2 × (largeur + hauteur)
+
+
+
+La méthode retourne cette valeur directement.
+
+------------------------------------------------------------------------
+
+## 2. Calcul de la surface
+
+La surface d’un rectangle est définie par :
+
 S = largeur × hauteur
-```
 
----
 
-##  Implémentation Rust — `src/rectangle.rs`
 
-```rust
-use pyo3::prelude::*;
+La méthode fournit cette valeur sous forme de `f64`.
 
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Rectangle {
-    pub largeur: f64,
-    pub hauteur: f64,
-}
+------------------------------------------------------------------------
 
-impl Rectangle {
-    pub fn new(largeur: f64, hauteur: f64) -> Result<Self, &'static str> {
-        if largeur <= 0.0 {
-            return Err("La largeur doit être strictement positive.");
-        }
-        if hauteur <= 0.0 {
-            return Err("La hauteur doit être strictement positive.");
-        }
-        Ok(Self { largeur, hauteur })
-    }
+# Fonction associée : `definir_rectangle`
 
-    pub fn perimetre(&self) -> f64 {
-        2.0 * (self.largeur + self.hauteur)
-    }
+Une fonction utilitaire permet depuis Python d’obtenir une description textuelle du rectangle construit :
 
-    pub fn surface(&self) -> f64 {
-        self.largeur * self.hauteur
-    }
-}
+"Rectangle en (x, y) : largeur × hauteur"
 
-#[pyfunction]
-pub fn definir_rectangle(largeur: f64, hauteur: f64) -> PyResult<String> {
-    let rect = Rectangle::new(largeur, hauteur)
-        .map_err(|msg| pyo3::exceptions::PyValueError::new_err(msg))?;
+python
+Copier le code
 
-    Ok(format!(
-        "Rectangle défini : largeur = {}, hauteur = {}",
-        rect.largeur, rect.hauteur
-    ))
-}
-```
+Elle effectue la même validation que le constructeur standard.
 
----
+------------------------------------------------------------------------
 
-##  `src/lib.rs`
-
-```rust
-mod rectangle;
-
-m.add_function(wrap_pyfunction!(rectangle::definir_rectangle, m)?)?;
-```
-
----
-
-##  Tests unitaires — `tests/test_definir_rectangle.py`
+# Exemple d’utilisation Python
 
 ```python
-import geocalculs as geo
-import pytest
+import geocalculs as g
 
-def test_rectangle_valide():
-    result = geo.definir_rectangle(4, 2)
-    assert "Rectangle défini" in result
+r = g.Rectangle(0, 0, 4, 2)
 
-def test_largeur_negative():
-    with pytest.raises(ValueError):
-        geo.definir_rectangle(-3, 2)
+print(r.perimetre())   # 12
+print(r.surface())     # 8
+print(r.x, r.y)        # 0 0
 
-def test_hauteur_negative():
-    with pytest.raises(ValueError):
-        geo.definir_rectangle(3, -1)
+desc = g.definir_rectangle(1, 1, 3, 2)
+print(desc)            # "Rectangle en (1, 1) : 3x2"
+Tests réalisés
+Les tests unitaires valident :
 
-def test_dimensions_nulles():
-    with pytest.raises(ValueError):
-        geo.definir_rectangle(0, 5)
+la création d’un rectangle valide
 
-    with pytest.raises(ValueError):
-        geo.definir_rectangle(5, 0)
-```
+les erreurs sur les dimensions nulles ou négatives
 
----
+la cohérence des valeurs retournées
 
-##  Exemple d'utilisation
+les différents constructeurs (standard, from_corners, from_center)
 
-```python
-import geocalculs as geo
-print(geo.definir_rectangle(4, 2))
-```
+le bon fonctionnement de perimetre() et surface()
 
-Résultat :
-
-```
-Rectangle défini : largeur = 4, hauteur = 2
-```
+le comportement de la fonction definir_rectangle

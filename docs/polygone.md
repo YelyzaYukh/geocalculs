@@ -34,7 +34,7 @@ Les côtés du polygone ne doivent jamais se croiser (exemple : forme en "8" ou 
 ### Constructeur
 ```python
 def __init__(points: list[tuple[float, float]])
-
+```
 
 # Polygone — Référence API
 
@@ -100,7 +100,7 @@ poly = g.Polygone(points)
 
 print(f"Périmètre : {poly.perimetre()}")
 print(f"Surface   : {poly.surface()}")
-
+```
 
 # Cas Invalide : Auto-Intersection (Sablier)
 
@@ -119,7 +119,7 @@ except ValueError as e:
     print(f"Erreur attrapée : {e}")
     # Sortie : Le polygone s'auto-intersecte (croisement de lignes).
 
-
+```
 # 5. Détails Techniques (Rust)
 
 L’implémentation interne se trouve dans `src/polygon.rs`.  

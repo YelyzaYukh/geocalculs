@@ -65,7 +65,7 @@ Il les convertit dans une structure interne unifiée :
 4.  **Calcul** :
     * Poly vs Poly → `sat_poly_poly()`
     * Poly vs Cercle → `sat_poly_cercle()`
-
+```
 ---
 
 ## 4. Guide d'utilisation (Python)
@@ -102,7 +102,7 @@ objet_dans_le_vide = g.Carre(1.5, 2, 0.5)
 # Grâce à la triangulation, ceci renvoie False
 collision = g.intersecte(forme_u, objet_dans_le_vide)
 print(f"Collision : {collision}")  # False
-
+```
 ## 5. Stratégie de Tests (`tests/test_intersection.py`)
 
 Les tests garantissent la fiabilité du moteur. Voici les scénarios critiques couverts :
