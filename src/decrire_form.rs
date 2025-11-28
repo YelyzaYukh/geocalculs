@@ -24,7 +24,7 @@ pub fn decrire_forme(
         // ---------------------------
         "cercle" | "circle" => {
             result.description = "Ensemble des points à distance fixe (rayon r) d'un centre.".into();
-            result.parametres_attendus = vec!["r (rayon)".into()];
+            result.parametres_attendus = vec!["r (rayon)".into(), "centre (x,y)".into()];
             result.formules = vec![
                 "Aire = π · r²".into(),
                 "Périmètre = 2 · π · r".into(),
