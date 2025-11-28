@@ -1,6 +1,6 @@
-/// function qui calcule la distance entre deux point en donnant 
+/// function qui calcule la distances entre deux point en donnant 
 /// les cordonnée des deux points
-/// 
+///
 use pyo3::prelude::*;
 
 
