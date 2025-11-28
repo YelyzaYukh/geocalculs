@@ -3,7 +3,7 @@ use pyo3::prelude::*;
 
 /// Représentation d’un carré
 #[pyclass]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Carre {
     #[pyo3(get, set)]
     pub x: f64,      // coordonnée X du coin supérieur gauche

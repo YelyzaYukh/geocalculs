@@ -1,7 +1,7 @@
 use pyo3::prelude::*;
 
 #[pyclass]
-#[derive(Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Losange {
     #[pyo3(get, set)]
     pub x: f64,
